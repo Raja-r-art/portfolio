@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, X, Activity } from "lucide-react";
+import { ExternalLink, X, Activity, Mic, Users, Sun, Play } from "lucide-react";
 import { Project, projectsData } from "../constants/portfolioData";
 import { GithubIcon } from "../components/SocialIcons";
 
@@ -20,6 +20,84 @@ function useMouseTilt(maxAngle = 10) {
   }, [maxAngle]);
   return { ref, tilt };
 }
+
+const getProjectLogo = (id: number, color: string) => {
+  switch (id) {
+    case 1: // Deep Fake Voice Detection
+      return (
+        <div className="flex flex-col items-center gap-1.5 my-auto w-full">
+          {/* Dynamic waveform visualizer representing human voice & synthetic fraud detection */}
+          <div className="flex items-end justify-center gap-1 h-9 w-full">
+            <motion.div 
+              className="w-1 h-3 rounded-full bg-emerald-400"
+              animate={{ height: [8, 20, 8] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div 
+              className="w-1 h-6 rounded-full bg-emerald-500"
+              animate={{ height: [12, 28, 12] }}
+              transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+            />
+            {/* AI synthetic voice fake wave - pulsing warning color bar */}
+            <motion.div 
+              className="w-1 h-8 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)]"
+              animate={{ height: [28, 10, 28], opacity: [1, 0.4, 1] }}
+              transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+            />
+            <motion.div 
+              className="w-1 h-5 rounded-full bg-emerald-400"
+              animate={{ height: [10, 22, 10] }}
+              transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
+            />
+            <motion.div 
+              className="w-1 h-2 rounded-full bg-emerald-500"
+              animate={{ height: [6, 14, 6] }}
+              transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+            />
+          </div>
+          <div className="flex items-center gap-1 text-[7.5px] font-mono text-emerald-400 font-bold uppercase tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
+            ANTI_FRAUD
+          </div>
+        </div>
+      );
+    case 2: // Let's Socialize
+      return (
+        <div className="flex flex-col items-center justify-center my-auto w-full">
+          <div className="relative p-1.5 rounded-xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
+            <Users className="w-7 h-7 text-neutral-300" style={{ color }} />
+            {/* Pulsing connection nodes */}
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+            <span className="absolute -bottom-0.5 -left-0.5 w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+          </div>
+          <span className="text-[7px] font-mono text-neutral-400 mt-1.5 uppercase tracking-wider">CONNECT_PEOPLE</span>
+        </div>
+      );
+    case 3: // Vitamin D Deficiency
+      return (
+        <div className="flex flex-col items-center justify-center my-auto w-full">
+          <div className="relative p-1.5 rounded-xl bg-white/5 border border-white/10">
+            <Sun className="w-7 h-7 text-amber-400 animate-pulse" />
+            <span className="absolute -bottom-0.5 -right-0.5 p-0.5 rounded-full bg-black border border-white/10">
+              <Activity className="w-2.5 h-2.5 text-emerald-400" />
+            </span>
+          </div>
+          <span className="text-[7px] font-mono text-neutral-400 mt-1.5 uppercase tracking-wider">ML_PREDICT</span>
+        </div>
+      );
+    case 4: // Movie Streaming Platform
+      return (
+        <div className="flex flex-col items-center justify-center my-auto w-full">
+          <div className="relative p-1.5 rounded-xl bg-white/5 border border-white/10">
+            <Play className="w-7 h-7 text-rose-500 fill-rose-500/20 translate-x-[1px]" />
+          </div>
+          <span className="text-[7px] font-mono text-neutral-400 mt-1.5 uppercase tracking-wider">MERN_STREAM</span>
+        </div>
+      );
+    default:
+      return null;
+  }
+};
 
 function ProjectsVisual() {
   const { ref, tilt } = useMouseTilt(12);
@@ -63,7 +141,7 @@ function ProjectsVisual() {
             return (
               <motion.div
                 key={project.id}
-                className="absolute rounded-2xl border border-white/10 flex flex-col items-start justify-between p-4.5 overflow-hidden"
+                className="absolute rounded-2xl border border-white/10 flex flex-col items-center justify-between p-3.5 overflow-hidden group"
                 style={{
                   left: pos.left,
                   top: pos.top,
@@ -76,25 +154,21 @@ function ProjectsVisual() {
                 transition={{ duration: 4.5 + idx * 0.6, repeat: Infinity, ease: "easeInOut", delay: idx * 0.6 }}
               >
                 {/* Top accent line */}
-                <div className="w-full h-[2px] rounded-full mb-2" style={{ backgroundColor: project.color, opacity: 0.6 }} />
+                <div className="w-full h-[2px] rounded-full mb-1.5" style={{ backgroundColor: project.color, opacity: 0.6 }} />
 
                 {/* Category chip */}
-                <span className="font-mono text-[9px] text-slate-500 uppercase tracking-wide leading-none">{project.category.split("/")[0].trim()}</span>
+                <span className="font-mono text-[8px] text-slate-500 uppercase tracking-wide leading-none">{project.category.split("/")[0].trim()}</span>
+
+                {/* Logo / visual representation */}
+                {getProjectLogo(project.id, project.color)}
 
                 {/* Title */}
-                <p className="font-display font-bold text-white leading-tight mt-2" style={{ fontSize: 11.5 }}>
-                  {project.title.split(" ").slice(0, 3).join(" ")}
+                <p className="font-display font-bold text-white text-center leading-tight mt-1.5" style={{ fontSize: size < 160 ? 10 : 11 }}>
+                  {project.title}
                 </p>
 
-                {/* Tech dots */}
-                <div className="flex gap-1.5 mt-2">
-                  {project.tech.slice(0, 3).map((t, ti) => (
-                    <div key={ti} className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: project.color, opacity: 0.5 + ti * 0.1 }} />
-                  ))}
-                </div>
-
                 {/* Bottom glow */}
-                <div className="absolute bottom-0 right-0 w-20 h-20 rounded-full blur-2xl" style={{ backgroundColor: project.color, opacity: 0.15 }} />
+                <div className="absolute bottom-0 right-0 w-20 h-20 rounded-full blur-2xl z-[-1]" style={{ backgroundColor: project.color, opacity: 0.15 }} />
               </motion.div>
             );
           })}

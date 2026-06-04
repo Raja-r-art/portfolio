@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import Loader from "./components/Loader";
-import CustomCursor from "./components/CustomCursor";
 import Navbar from "./components/Navbar";
 import ParticlesBackground from "./components/ParticlesBackground";
 import Hero from "./sections/Hero";
@@ -50,9 +49,6 @@ export default function App() {
         ) : (
           <div key="portfolio-workspace" className="relative w-full min-h-screen bg-[#020202] text-white">
             
-            {/* Custom Cursor */}
-            <CustomCursor />
-
             {/* Sticky Navigation Bar */}
             <Navbar activeSection={activeSection} />
 
